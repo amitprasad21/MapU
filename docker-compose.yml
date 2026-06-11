@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # Local PostgreSQL database container (for offline or local development runs)
+  postgres:
+    image: postgres:15-alpine
+    container_name: geofence-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: geofence_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d geofence_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Golang Gin Backend API & WebSocket Hub
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: geofence-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      # By default, connect to the local containerized postgres db.
+      # To run with Supabase, replace this value with the Supabase connection string.
+      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/geofence_db?sslmode=disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # React Vite Frontend, served via Nginx with SPA routing support
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: geofence-frontend
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_API_URL=http://localhost:8080
+      - VITE_WS_URL=ws://localhost:8080/ws/alerts
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
