@@ -4,7 +4,6 @@
 [![React Version](https://img.shields.io/badge/React-18%2B-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
 [![Docker Support](https://img.shields.io/badge/Docker-Supported-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com)
 [![Docker Hub](https://img.shields.io/badge/Docker%20Hub-amitprasad21-blue?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/u/amitprasad21)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 GeoAlert is a production-ready, high-performance geofencing and vehicle telemetry tracking platform. It features a concurrency-safe **Golang** REST & WebSocket backend, a **PostgreSQL** relational database, and an ultra-premium **Light Glassmorphic Bento-Grid** frontend built with **React**, **Vite**, and **Leaflet Maps**.
 
@@ -140,9 +139,3 @@ Every REST response includes a custom `time_ns` header measuring execution proce
 | `/api/vehicles/location/:vehicle_id` | `GET` | Get current location and containing zone data. |
 | `/api/alerts/configure` | `POST` | Set a rule trigger to monitor transitions. |
 | `/api/violations/history` | `GET` | Retrieve historical logs (supports pagination and filtering). |
-
----
-
-## 🛡️ License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
